@@ -4,12 +4,17 @@ phases:
   install:
     runtime-versions:
       python: 3.x
+    commands:
+      - echo Installing dependencies...
+      - pip install -r requirements.txt
   build:
     commands:
-      - zip -r sysinfo.zip sysinfo.py
-      - aws s3 cp sysinfo.zip s3://your-bucket-name/sysinfo.zip
+      - echo Build started on `date`
+      - python sysinfo.py  # You may want to ensure the script performs actions directly
+  post_build:
+    commands:
+      - echo Build completed on `date'
 
 artifacts:
   files:
-    - sysinfo.zip
-  discard-paths: yes
+    - '**/*'  # Adjust this as needed, depending on what you want to include in the artifact
