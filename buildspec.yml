@@ -12,7 +12,7 @@ phases:
       - echo Bundling the tool...
       - ls -al
       - mkdir -p artifact  # Create a directory for the artifact
-      - cp sysinfo.py artifact/  # Copy the Python script into the artifact directory
+      - cp sys_info.py artifact/  # Copy the Python script into the artifact directory
       - cd artifact
       - zip -r sysinfo.zip .  # Zip the contents into an artifact
       - cd ..  # Go back to the previous directory
