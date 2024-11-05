@@ -1,0 +1,15 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.x
+  build:
+    commands:
+      - zip -r sysinfo.zip sysinfo.py
+      - aws s3 cp sysinfo.zip s3://your-bucket-name/sysinfo.zip
+
+artifacts:
+  files:
+    - sysinfo.zip
+  discard-paths: yes
