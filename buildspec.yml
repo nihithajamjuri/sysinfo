@@ -6,7 +6,8 @@ phases:
       python: 3.x  # Specify the Python version
     commands:
       - echo Installing dependencies...
-     # - pip install -r requirements.txt  # Install dependencies if you have a requirements.txt
+      
+
   build:
     commands:
       - echo Build started on `date`
