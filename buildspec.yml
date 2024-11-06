@@ -9,13 +9,11 @@ phases:
      # - pip install -r requirements.txt  # Only if you have any dependencies like psutil
   build:
     commands:
-      - echo Packaging the tool..
       - ls 
-      - mkdir -p build/artifact
-      - cp requirements.txt sys_info.py build/artifact/
-  post_build:
-    commands:
-      - echo Uploading artifact to S3...
-      - aws s3 cp build/artifact/ s3://cicd-sysinfo/sysinfo-clone/ --recursive
+
+artifacts:
+  files:
+    - '**/*'
+  base-directory: .
 
 
