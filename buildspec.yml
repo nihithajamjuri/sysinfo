@@ -2,12 +2,21 @@ version: 0.2
 
 phases:
   install:
-    runtime-versions:
-      python: 3.x
+    commands:
+      echo "Installing dependencies"
+      # You can install any dependencies for building here
   build:
     commands:
-      - echo "Build completed"
+      echo "Creating artifact directory"
+      mkdir -p artifact
+      cp sys_info.py artifact/
+  post_build:
+    commands:
+      echo "Uploading artifact to S3"
+      aws s3 cp artifact/ s3://cicd-sysinfo/sysinfo-clone/BuildArtif/ --recursive
+
 artifacts:
   files:
-    - '**/*'
-  name: sysinfo.zip
+    - artifact/**
+  name: sys_info.zip
+
