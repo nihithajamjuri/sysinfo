@@ -3,17 +3,12 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      python: 3.8
-    commands:
-      - echo "Installing dependencies if needed"
-      
+      python: 3.x
   build:
     commands:
-      - echo "Preparing sys_info.py for deployment"
-  
+      - echo "Build completed"
 artifacts:
   files:
-    - sys_info.py
-  base-directory: .
+    - sysinfo.py
   discard-paths: yes
-  name: sys_info_build.zip  # Sets a consistent artifact name
+  base-directory: .
