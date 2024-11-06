@@ -10,10 +10,9 @@ phases:
   build:
     commands:
       - echo Packaging the tool...
-      - ls -al
+      - ls 
       - mkdir -p build/artifact
-      - ls -al
-      - cp sysinfo.py build/artifact/  # Copy the script to artifact folder
+      - ls 
   post_build:
     commands:
       - echo Uploading artifact to S3...
