@@ -2,21 +2,22 @@ version: 0.2
 
 phases:
   install:
+    runtime-versions:
+      python: 3.x
     commands:
-      echo "Installing dependencies"
-      # You can install any dependencies for building here
+      - echo Installing dependencies...
+     # - pip install -r requirements.txt  # Only if you have any dependencies like psutil
   build:
     commands:
-      echo "Creating artifact directory"
-      mkdir -p artifact
-      cp sys_info.py artifact/
+      - echo Packaging the tool...
+      - mkdir -p build/artifact
+      - cp sysinfo.py build/artifact/  # Copy the script to artifact folder
   post_build:
     commands:
-      echo "Uploading artifact to S3"
-      aws s3 cp artifact/ s3://cicd-sysinfo/sysinfo-clone/BuildArtif/ --recursive
+      - echo Uploading artifact to S3...
+      - aws s3 cp build/artifact/ s3://cicd-sysinfo/sysinfo-clone/ --recursive
 
 artifacts:
   files:
-    - artifact/**
-
-
+    - '**/*'
+  discard-empty-files: yes
