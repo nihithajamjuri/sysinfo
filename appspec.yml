@@ -1,0 +1,15 @@
+version: 0.0
+os: linux
+
+files:
+  - source: /src/
+    destination: /destination/
+
+
+os: windows
+
+files:
+  - source: /src/
+    destination: C:/temp/
+
+
