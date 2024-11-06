@@ -2,14 +2,8 @@ version: 0.0
 os: linux
 
 files:
-  - source: /src/
-    destination: /destination/
+  - source: /sys_info.py
+    destination: /home/ec2-user
 
-
-os: windows
-
-files:
-  - source: /src/
-    destination: C:/temp/
 
 
