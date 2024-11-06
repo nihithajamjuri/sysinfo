@@ -15,8 +15,4 @@ phases:
       echo "Uploading artifact to S3"
       aws s3 cp artifact/ s3://cicd-sysinfo/sysinfo-clone/BuildArtif/ --recursive
 
-artifacts:
-  files:
-    - artifact/**
-  name: sys_info.zip
 
