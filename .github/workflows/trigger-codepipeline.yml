@@ -1,0 +1,26 @@
+name: Trigger AWS CodePipeline
+
+on:
+  push:
+    branches:
+      - main  # Trigger on push to the main branch; adjust as needed
+
+
+jobs:
+  trigger-codepipeline:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: nihithajamjuri/sysinfo
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Trigger AWS CodePipeline
+        run: |
+          aws codepipeline start-pipeline-execution --name sysinfo-clone
+
