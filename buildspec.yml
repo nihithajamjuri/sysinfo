@@ -12,7 +12,7 @@ phases:
       - echo Packaging the tool..
       - ls 
       - mkdir -p build/artifact
-      - cp -r * build/artifact/
+      - cp requirements.txt sys_info.py build/artifact/
   post_build:
     commands:
       - echo Uploading artifact to S3...
