@@ -1,10 +1,9 @@
-# buildspec.yml
 version: 0.2
 
 phases:
   install:
     runtime-versions:
-      python: 3.8  # Specify the Python version
+      python: 3.8
     commands:
       - echo "Installing dependencies if needed"
       
@@ -15,13 +14,6 @@ phases:
 artifacts:
   files:
     - sys_info.py
+  base-directory: BuildArtif
   discard-paths: yes
-  base-directory: .
-  # Replace <your-s3-bucket-name> with your S3 bucket name.
-  # This will push the sys_info.py to a specified S3 bucket.
-artifacts:
-  files:
-    - sys_info.py
-  name: sys_info_build.zip
-  discard-paths: yes
-  base-directory: .
+  name: sys_info_build.zip  # Sets a consistent artifact name
