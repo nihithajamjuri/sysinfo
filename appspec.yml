@@ -1,5 +1,5 @@
 version: 0.0
-
+os: $OS_TYPE
 # Define the files section where you specify different paths for each OS
 files:
   - source: /sys_info.py
