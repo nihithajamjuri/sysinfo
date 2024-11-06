@@ -14,6 +14,6 @@ phases:
 artifacts:
   files:
     - sys_info.py
-  base-directory: BuildArtif/SourceArti
+  base-directory: .
   discard-paths: yes
   name: sys_info_build.zip  # Sets a consistent artifact name
