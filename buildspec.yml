@@ -1,19 +1,27 @@
+# buildspec.yml
 version: 0.2
 
 phases:
   install:
     runtime-versions:
-      python: 3.x  # Specify the Python version you need
+      python: 3.8  # Specify the Python version
     commands:
-      - echo Installing dependencies...
+      - echo "Installing dependencies if needed"
+      
   build:
     commands:
-      - echo Build started on `date`
-      - echo Bundling the tool...
-      - ls -al
-      - mkdir -p artifact  # Create a directory for the artifact
-      - cp sys_info.py artifact/  # Copy the Python script into the artifact directory
-      - cd artifact
-      - zip -r sysinfo.zip .  # Zip the contents into an artifact
-      - cd ..  # Go back to the previous directory
-      - echo Build completed on `date`
+      - echo "Preparing sys_info.py for deployment"
+  
+artifacts:
+  files:
+    - sys_info.py
+  discard-paths: yes
+  base-directory: .
+  # Replace <your-s3-bucket-name> with your S3 bucket name.
+  # This will push the sys_info.py to a specified S3 bucket.
+artifacts:
+  files:
+    - sys_info.py
+  name: sys_info_build.zip
+  discard-paths: yes
+  base-directory: .
