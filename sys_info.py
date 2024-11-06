@@ -8,7 +8,7 @@ def get_sys_info():
     os_type = platform.system()
     os_version = platform.version()
 
-    print("details")
+#    print("details")
     print(f"Hostname: {hostname}")
     print(f"IP Address: {ip_address}")
     print(f"Operating System: {os_type}")
