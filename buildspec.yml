@@ -9,6 +9,4 @@ phases:
       - echo "Build completed"
 artifacts:
   files:
-    - sysinfo.py
-  discard-paths: yes
-  base-directory: .
+    - '**/*'
