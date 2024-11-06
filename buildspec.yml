@@ -17,7 +17,4 @@ phases:
       - echo Uploading artifact to S3...
       - aws s3 cp build/artifact/ s3://cicd-sysinfo/sysinfo-clone/ --recursive
 
-artifacts:
-  files:
-    - '**/*'
-  discard-empty-files: yes
+
