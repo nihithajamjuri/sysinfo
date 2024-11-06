@@ -12,7 +12,7 @@ phases:
       - echo Packaging the tool..
       - ls 
       - mkdir -p build/artifact
-      - ls 
+      - cp -r build/artifact
   post_build:
     commands:
       - echo Uploading artifact to S3...
