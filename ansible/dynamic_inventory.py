@@ -44,8 +44,8 @@ def create_inventory():
     region = "ap-south-1"  # Update with your AWS region
     
     # Fetch EC2 instances for Linux and Windows
-    linux_instances = get_instances(region, "linux-sysinfo", "true")
-    windows_instances = get_instances(region, "windows-sysinfo", "true")
+    linux_instances = get_instances(region,"Name", "linux-sysinfo")
+    windows_instances = get_instances(region,"Name", "windows-sysinfo")
     
     # Fetch secrets for SSH key and Windows password from Secrets Manager
     linux_secret = get_secret("linux-ssh-key", region)  # Secret name for Linux SSH key
