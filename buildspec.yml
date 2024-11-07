@@ -15,14 +15,14 @@ phases:
       # Retrieve Linux PEM key from Secrets Manager
       - echo "Retrieving PEM key for Linux from Secrets Manager"
       - raw=$(aws secretsmanager get-secret-value --secret-id linux-ssh-key --query SecretString --output text)
-      - echo $raw | jq -r '.["linux-ssh-key"]' > private_key.pem
+      - echo $raw > private_key.pem
       - chmod 600 private_key.pem  # Set appropriate permissions for the PEM file
 
       # Retrieve Windows credentials from Secrets Manager
-      - echo "Retrieving Windows credentials from Secrets Manager"
-      - RAWOUTPUT=$(aws secretsmanager get-secret-value --secret-id windows-admin-password --query SecretString --output text)
-      - export WIN_USERNAME="Administrator"
-      - export WIN_PASSWORD=$(echo $RAWOUTPUT | jq -r '.["windows-admin-password"]')
+   #   - echo "Retrieving Windows credentials from Secrets Manager"
+   #   - RAWOUTPUT=$(aws secretsmanager get-secret-value --secret-id windows-admin-password --query SecretString --output text)
+    #  - export WIN_USERNAME="Administrator"
+     # - export WIN_PASSWORD=$(echo $RAWOUTPUT | jq -r '.["windows-admin-password"]')
 
   build:
         commands:
