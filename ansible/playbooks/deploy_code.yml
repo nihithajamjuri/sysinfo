@@ -1,8 +1,8 @@
 ---
 - name: Deploy code to Linux and Windows EC2 instances
   hosts: 
-    - tag_Name_linux-sysinfo  # Target Linux instances with the 'linux-sysinfo' tag
-    - tag_Name_windows-sysinfo  # Target Windows instances with the 'windows-sysinfo' tag
+    - tag_Name_linux_sysinfo  # Target Linux instances with the 'linux-sysinfo' tag
+    - tag_Name_windows_sysinfo  # Target Windows instances with the 'windows-sysinfo' tag
   gather_facts: yes
   vars:
     build_artifact_directory: "/sys_info.py"  # Local build directory
