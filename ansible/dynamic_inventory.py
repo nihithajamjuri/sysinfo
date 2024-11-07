@@ -13,7 +13,7 @@ def get_secret(secret_name, region_name):
         response = client.get_secret_value(SecretId=secret_name)
         # Secrets Manager returns the secret as a string
         secret = response['SecretString']
-        return json.loads(secret)
+        return secret
     except ClientError as e:
         print(f"Error retrieving secret: {e}")
         return None
