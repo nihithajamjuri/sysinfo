@@ -34,7 +34,7 @@ phases:
           - python3 ansible/dynamic_inventory.py > dynamic_inventory.json
           - ls -al
           - cat dynamic_inventory.json
-          - ansible all -m ping -i dynamic_inventory.json
+          - ansible-playbook ansible/playbooks/deploy_code.yml -i dynamic_inventory.json
 
 artifacts:
   files:
