@@ -14,8 +14,7 @@ phases:
     commands:
       # Retrieve Linux PEM key from Secrets Manager
       - echo "Retrieving PEM key for Linux from Secrets Manager"
-      - raw=$(aws secretsmanager get-secret-value --secret-id linux-ssh-key --query SecretString --output text)
-      - echo $raw > private_key.pem
+      - aws secretsmanager get-secret-value --secret-id linux-ssh-key --query SecretString --output text > private_key.pem 
       - chmod 600 private_key.pem  # Set appropriate permissions for the PEM file
 
       # Retrieve Windows credentials from Secrets Manager
