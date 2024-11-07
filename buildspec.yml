@@ -31,9 +31,9 @@ phases:
           - ansible-inventory -i ansible/inventory/demo.aws_ec2.yml --list
           - ls -al
           - pwd
+          - cp sys_info.py ansible/playbooks/files
           - cat private_key.pem
           - python3 ansible/dynamic_inventory.py > dynamic_inventory.json
-          - ls -al
           - cat dynamic_inventory.json
           - ansible-playbook ansible/playbooks/deploy_code.yml -i dynamic_inventory.json
 

@@ -3,7 +3,7 @@
   hosts: all # Target Linux instances with the 'linux-sysinfo' tag
   gather_facts: yes
   vars:
-    build_artifact_directory: "./sys_info.py"  # Local build directory
+    build_artifact_directory: "sys_info.py"  # Local build directory
     linux_deployment_directory: "/home/ec2-user"  # Deployment directory on Linux
     windows_deployment_directory: "C:\\temp"  # Deployment directory on Windows
   tasks:
