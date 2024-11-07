@@ -32,11 +32,10 @@ phases:
           - ansible-inventory -i ansible/inventory/demo.aws_ec2.yml --list
           - ls -al
           - cat private_key.pem
-          - ansible-playbook -i ansible/inventory/demo.aws_ec2.yml  ansible/create_dynamic_inventory.yml
-          - ansible all -m debug -a "var=group_names" -i dynamic_inventory.ini
-          #- ansible all -m ping -i ansible/inventory/demo.aws_ec2.yml 
-          #- ansible-playbook -i ansible/inventory/demo.aws_ec2.yml ansible/playbooks/deploy_code.yml
-          #-  ansible-playbook -i ansible/inventory/demo.aws_ec2.yml ansible/playbooks/deploy_code.yml --extra-vars "win_username=$WIN_USERNAME win_password=$WIN_PASSWORD"
+          - python3 ansible/dynamic_inventory.py > dynamic_inventory.json
+          - ls -al
+          - cat dynamic_inventory.json
+          - ansible all -m debug -a "var=group_names" dynamic_inventory.json
 
 artifacts:
   files:
