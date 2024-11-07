@@ -8,7 +8,7 @@ filters:
     - "windows-sysinfo"
 keyed_groups:
   - key: tags.Name  # Group by 'Name' tag (e.g., linux-sysinfo, windows-sysinfo)
-    prefix: "tag_Name_"
+    prefix: "tag_Name"
 hostnames:
   - dns-name  # Use the public DNS name if available, otherwise fall back to private IP
   - private-ip  # Use private IP as fallback if DNS name is not available
