@@ -22,8 +22,7 @@ phases:
       - echo "Running Ansible Playbook to deploy to Linux and Windows"
       - ansible-galaxy collection install amazon.aws
       - ansible-inventory -i ansible/inventory/demo.aws_ec2.yml --list 
-      - ansible tag_Name_linux_sysinfo -m ping -v
-#      - ansible-playbook -i ansible/inventory/demo.aws_ec2.yml ansible/playbooks/deploy_code.yml
+      - ansible-playbook -i ansible/inventory/demo.aws_ec2.yml ansible/playbooks/deploy_code.yml
 
 artifacts:
   files:
