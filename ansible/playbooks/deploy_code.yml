@@ -5,7 +5,7 @@
   vars:
     build_artifact_directory: "/sys_info.py"  # Local build directory
     linux_deployment_directory: "/home/ec2-user"  # Deployment directory on Linux
-    windows_deployment_directory: "c:\temp"  # Deployment directory on Windows
+    windows_deployment_directory: "C:\\temp"  # Deployment directory on Windows
   tasks:
     
     - name: Ensure the system is up-to-date on Linux
@@ -13,10 +13,11 @@
       ansible.builtin.copy:
         src: "{{ build_artifact_directory }}"
         dest: "{{ linux_deployment_directory }}/"
+        mode: '0644' 
 
     - name: Ensure the system is up-to-date on Windows
       when: ansible_facts['os_family'] == 'Windows'  # For Windows
       ansible.windows.win_copy:
         src: "{{ build_artifact_directory }}"
-        dest: "{{ windows_deployment_directory }}\"
+        dest: "{{ windows_deployment_directory }}\\"
 
