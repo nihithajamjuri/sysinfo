@@ -6,7 +6,7 @@ phases:
       python: 3.8
     commands:
       # Install necessary dependencies for Ansible and AWS CLI
-      - pip install ansible amazon.aws boto3
+      - pip install ansible  boto3
 
   pre_build:
     commands:
