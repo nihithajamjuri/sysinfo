@@ -1,4 +1,4 @@
-i---
+---
 - name: Generate dynamic inventory from EC2 instances based on tags
   hosts: all
   gather_facts: yes
