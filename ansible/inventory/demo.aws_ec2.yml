@@ -7,14 +7,14 @@ filters:
     - "linux-sysinfo"
     - "windows-sysinfo"
 keyed_groups:
-  - key: tags.Name  # Group by 'Name' tag (e.g., linux-sysinfo, windows-sysinfo)
+  - key: tags.Name  # Group by 'Name' tag (e.g., linux-sysinfo, tag_Name_windows_sysinfo)
     prefix: "tag_Name"
 hostnames:
   - dns-name  # Use the public DNS name if available, otherwise fall back to private IP
   - private-ip  # Use private IP as fallback if DNS name is not available
 compose:
-  ansible_connection: "{{ 'winrm' if 'windows-sysinfo' in group_names else 'ssh' }}"  # Use WinRM for Windows, SSH for Linux
-  ansible_user: "{{ 'Administrator' if 'windows-sysinfo' in group_names else 'ec2-user' }}"  # Set user: 'Administrator' for Windows, 'ec2-user' for Linux
+  ansible_connection: "{{ 'winrm' if 'tag_Name_windows_sysinfo' in group_names else 'ssh' }}"  # Use WinRM for Windows, SSH for Linux
+  ansible_user: "{{ 'Administrator' if 'tag_Name_windows_sysinfo' in group_names else 'ec2-user' }"  # Set user: 'Administrator' for Windows, 'ec2-user' for Linux
   ansible_ssh_private_key_file: "{{ lookup('aws_secretsmanager', 'linux-ssh-key') }}"  # Fetch SSH key for Linux from Secrets Manager
   ansible_password: "{{ lookup('aws_secretsmanager', 'windows-admin-password') }}"  # Fetch Windows password from Secrets Manager
   ansible_winrm_transport: ntlm  # Windows uses WinRM transport
