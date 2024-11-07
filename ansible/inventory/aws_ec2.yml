@@ -3,8 +3,9 @@ regions:
   - ap-south-1  # Specify your AWS region
 filters:
   # Filter instances by tags
-  tag:Name: linux-sysinfo  # Tag for Linux instances
-  tag:Name: windows-sysinfo  # Tag for Windows instances
+  tag:Name:
+    - "linux-sysinfo"
+    - "windows-sysinfo"
 keyed_groups:
   - key: tags.Name  # Group by 'Name' tag (e.g., linux-sysinfo, windows-sysinfo)
     prefix: "tag_Name_"
