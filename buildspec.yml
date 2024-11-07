@@ -1,5 +1,7 @@
 version: 0.2
-
+env:
+  variables:
+    ANSIBLE_SSH_EXTRA_ARGS: "-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
 phases:
   install:
     runtime-versions:
