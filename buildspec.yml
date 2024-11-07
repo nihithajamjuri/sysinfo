@@ -20,7 +20,8 @@ phases:
     commands:
       # Set environment variables for Ansible to use
       - echo "Running Ansible Playbook to deploy to Linux and Windows"
-      - ansible-playbook -i ansible/inventory/aws_ec2.yml ansible/playbooks/deploy_code.yml
+      - ansible-inventory -i ansible/inventory/aws-ec2.yml --list -v
+      - ansible-playbook -i ansible/inventory/aws-ec2.yml ansible/playbooks/deploy_code.yml
 
 artifacts:
   files:
