@@ -3,19 +3,20 @@
   hosts:
     - tag_Name_linux_sysinfo  # Target Linux instances with the 'linux-sysinfo' tag
     - tag_Name_windows_sysinfo  # Target Windows instances with the 'windows-sysinfo' tag
-  gather_facts: yes
+  gather_facts: no
   vars:
     build_artifact_directory: "/sys_info.py"  # Local build directory
     linux_deployment_directory: "/home/ec2-user"  # Deployment directory on Linux
     windows_deployment_directory: "c:\temp"  # Deployment directory on Windows
   tasks:
+    
     - name: Ensure the system is up-to-date on Linux
       when: ansible_facts['os_family'] == 'RedHat'  # For Linux (or adjust based on your system)
       ansible.builtin.copy:
         src: "{{ build_artifact_directory }}/"
         dest: "{{ linux_deployment_directory }}/"
       vars:
-        ansible_ssh_user: ec2-user
+        ansible_user: ec2-user
         ansible_connection: ssh
         ansible_private_key_file: private_key.pem
 
