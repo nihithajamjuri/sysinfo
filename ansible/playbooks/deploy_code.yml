@@ -1,9 +1,7 @@
 ---
 - name: Deploy to EC2 instances
-  hosts:
-    - tag_Name_linux_sysinfo  # Target Linux instances with the 'linux-sysinfo' tag
-    - tag_Name_windows_sysinfo  # Target Windows instances with the 'windows-sysinfo' tag
-  gather_facts: no
+  hosts: all # Target Linux instances with the 'linux-sysinfo' tag
+  gather_facts: yes
   vars:
     build_artifact_directory: "/sys_info.py"  # Local build directory
     linux_deployment_directory: "/home/ec2-user"  # Deployment directory on Linux
@@ -15,20 +13,10 @@
       ansible.builtin.copy:
         src: "{{ build_artifact_directory }}/"
         dest: "{{ linux_deployment_directory }}/"
-      vars:
-        ansible_user: ec2-user
-        ansible_connection: ssh
-        ansible_private_key_file: private_key.pem
 
     - name: Ensure the system is up-to-date on Windows
       when: ansible_facts['os_family'] == 'Windows'  # For Windows
       ansible.windows.win_copy:
         src: "{{ build_artifact_directory }}\\"
         dest: "{{ windows_deployment_directory }}\\"
-      vars:
-        ansible_user: "{{ win_username }}"    # Windows username from --extra-vars
-        ansible_password: "{{ win_password }}" # Windows password from --extra-vars
-        ansible_connection: winrm
-        ansible_winrm_transport: ntlm
-        ansible_winrm_server_cert_validation: ignore  # For testing, can be adjusted based on your environment
 

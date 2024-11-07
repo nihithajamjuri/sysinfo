@@ -84,6 +84,8 @@ def create_inventory():
                 "ansible_password": windows_secret,  # Windows admin password from Secrets Manager
                 "ansible_connection": "winrm",
                 "ansible_winrm_transport": "ntlm",
+                "ansible_winrm_scheme": "http",
+                "ansible_winrm_port": 5985,
                 "ansible_winrm_server_cert_validation": "ignore",
                 "ansible_host": instance['PublicIpAddress']
             }
