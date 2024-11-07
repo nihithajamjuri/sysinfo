@@ -1,38 +1,42 @@
 version: 0.2
-env:
-  variables:
-    ANSIBLE_SSH_EXTRA_ARGS: "-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
 
 phases:
   install:
     runtime-versions:
-      python: 3.x
+      python: 3.8
     commands:
-      # Install required libraries
-      - pip install boto3 ansible
-      - echo "Install complete"
+      # Install necessary dependencies for Ansible and AWS CLI
+      - pip install ansible amazon.aws boto3
 
   pre_build:
     commands:
-      - echo "Retrieving Secrets from AWS Secrets Manager"
-      - SECRET_LINUX_SSH_KEY=$(aws secretsmanager get-secret-value --secret-id linux-ssh-key --query SecretString --output text)
-      - SECRET_WINDOWS_PASSWORD=$(aws secretsmanager get-secret-value --secret-id windows-admin-password --query SecretString --output text)
-      - echo "Secrets retrieved successfully"
+      # Retrieve Linux PEM key from Secrets Manager
+      - echo "Retrieving PEM key for Linux from Secrets Manager"
+      - aws secretsmanager get-secret-value --secret-id linux-ssh-key --query SecretString --output text > linux_secret.json
+      - export PEM_KEY=$(cat linux_secret.json | jq -r '.pem_key')  # Adjust the key name based on your secret's structure
+      - echo "$PEM_KEY" > private_key.pem
+      - chmod 600 private_key.pem  # Set appropriate permissions for the PEM file
+
+      # Retrieve Windows credentials from Secrets Manager
+      - echo "Retrieving Windows credentials from Secrets Manager"
+      - aws secretsmanager get-secret-value --secret-id windows-admin-password --query SecretString --output text > windows_secret.json
+      - export WIN_USERNAME=$(cat windows_secret.json | jq -r '.username')
+      - export WIN_PASSWORD=$(cat windows_secret.json | jq -r '.password')
 
   build:
-    commands:
-      # Set environment variables for Ansible to use
-      - echo "Running Ansible Playbook to deploy to Linux and Windows"
-      - ansible-galaxy collection install amazon.aws
-      - ansible-inventory -i ansible/inventory/demo.aws_ec2.yml --list
-      - ls -al
-      - ansible all -m debug -a "var=group_names" -i ansible/inventory/demo.aws_ec2.yml
-      - ansible all -m ping -i ansible/inventory/demo.aws_ec2.yml 
-      #- ansible-playbook -i ansible/inventory/demo.aws_ec2.yml ansible/playbooks/deploy_code.yml
+        commands:
+          # Set environment variables for Ansible to use
+          - echo "Running Ansible Playbook to deploy to Linux and Windows"
+          - ansible-galaxy collection install amazon.aws
+          - ansible-inventory -i ansible/inventory/demo.aws_ec2.yml --list
+          - ls -al
+          - cat private_key.pem
+          - ansible all -m debug -a "var=group_names" -i ansible/inventory/demo.aws_ec2.yml
+          #- ansible all -m ping -i ansible/inventory/demo.aws_ec2.yml 
+          #- ansible-playbook -i ansible/inventory/demo.aws_ec2.yml ansible/playbooks/deploy_code.yml
+          -  ansible-playbook -i ansible/inventory/demo.aws_ec2.yml  --private-key private_key.pem  ansible/playbooks/deploy_code.yml --extra-vars "win_username=$WIN_USERNAME win_password=$WIN_PASSWORD"
 
 artifacts:
   files:
     - '**/*'
   base-directory: .
-
-
