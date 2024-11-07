@@ -5,11 +5,22 @@ phases:
     runtime-versions:
       python: 3.x
     commands:
-      - echo Installing dependencies...
-     # - pip install -r requirements.txt  # Only if you have any dependencies like psutil
+      # Install required libraries
+      - pip install boto3 ansible
+      - echo "Install complete"
+
+  pre_build:
+    commands:
+      - echo "Retrieving Secrets from AWS Secrets Manager"
+      - SECRET_LINUX_SSH_KEY=$(aws secretsmanager get-secret-value --secret-id linux-ssh-key --query SecretString --output text)
+      - SECRET_WINDOWS_PASSWORD=$(aws secretsmanager get-secret-value --secret-id windows-admin-password --query SecretString --output text)
+      - echo "Secrets retrieved successfully"
+
   build:
     commands:
-      - ls 
+      # Set environment variables for Ansible to use
+      - echo "Running Ansible Playbook to deploy to Linux and Windows"
+      - ansible-playbook -i ansible/inventory/aws_ec2.yml ansible/playbooks/deploy_code.yml
 
 artifacts:
   files:

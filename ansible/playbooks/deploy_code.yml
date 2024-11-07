@@ -1,0 +1,26 @@
+---
+- name: Deploy code to Linux and Windows EC2 instances
+  hosts: 
+    - tag_Name_linux-sysinfo  # Target Linux instances with the 'linux-sysinfo' tag
+    - tag_Name_windows-sysinfo  # Target Windows instances with the 'windows-sysinfo' tag
+  gather_facts: yes
+  vars:
+    build_artifact_directory: "/sys_info.py"  # Local build directory
+    linux_deployment_directory: "/home/ec2-user"  # Deployment directory on Linux
+    windows_deployment_directory: "c:\temp"  # Deployment directory on Windows
+
+  tasks:
+    - name: Copy build artifacts to Linux instances
+      when: ansible_connection == 'ssh'  # Only for Linux instances
+      ansible.builtin.copy:
+        src: "{{ build_artifact_directory }}/"
+        dest: "{{ linux_deployment_directory }}/"
+      become: yes
+
+    - name: Copy build artifacts to Windows instances
+      when: ansible_connection == 'winrm'  # Only for Windows instances
+      ansible.windows.win_copy:
+        src: "{{ build_artifact_directory }}\\"
+        dest: "{{ windows_deployment_directory }}\\"
+
+
