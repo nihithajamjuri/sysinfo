@@ -31,59 +31,64 @@ def save_ssh_key(ssh_key_content, key_path):
     try:
         with open(key_path, 'w') as f:
             f.write(ssh_key_content)
-        os.chmod(key_path, 600)  # Set permissions to be readable only by the owner
-        print(f"SSH key saved to {key_path}")
+        os.chmod(key_path, 0o600)  # Set permissions to be readable only by the owner
     except Exception as e:
         print(f"Error saving SSH key: {e}")
 
 def create_inventory():
     """Generate dynamic Ansible inventory."""
-    inventory = {"_meta": {"hostvars": {}}}
+    inventory = {
+        "all": {
+            "hosts": {}
+        }
+    }
     
     # AWS Region
     region = "ap-south-1"  # Update with your AWS region
     
     # Fetch EC2 instances for Linux and Windows
-    linux_instances = get_instances(region,"Name", "linux-sysinfo")
-    windows_instances = get_instances(region,"Name", "windows-sysinfo")
+    linux_instances = get_instances(region, "Name", "linux-sysinfo")
+    windows_instances = get_instances(region, "Name", "windows-sysinfo")
     
     # Fetch secrets for SSH key and Windows password from Secrets Manager
     linux_secret = get_secret("linux-ssh-key", region)  # Secret name for Linux SSH key
     windows_secret = get_secret("windows-admin-password", region)  # Secret name for Windows password
 
     # Path to save the SSH private key
-    ssh_key_path = "private_key.pem"  # Update this path to where you want the .pem file
+    ssh_key_path = "./private_key.pem"  # Update this path to where you want the .pem file
     
     # Process Linux instances
     for reservation in linux_instances:
         for instance in reservation['Instances']:
-            instance_id = instance['InstanceId']
+            instance_id = instance['PublicIpAddress']
             # Save SSH key to a .pem file
             save_ssh_key(linux_secret, ssh_key_path)
             
-            inventory[instance_id] = {"ansible_host": instance['PublicIpAddress']}
-            inventory["_meta"]["hostvars"][instance_id] = {
+            # Add instance to the "hosts" dictionary in the "all" group
+            inventory["all"]["hosts"][instance_id] = {
                 "ansible_user": "ec2-user",  # Default user for Amazon Linux
                 "ansible_ssh_private_key_file": ssh_key_path,  # Use the saved SSH key
                 "ansible_connection": "ssh",
-                "ansible_become": True
+                "ansible_become": True,
+                "ansible_host": instance['PublicIpAddress']
             }
 
     # Process Windows instances
     for reservation in windows_instances:
         for instance in reservation['Instances']:
-            instance_id = instance['InstanceId']
-            inventory[instance_id] = {"ansible_host": instance['PublicIpAddress']}
-            inventory["_meta"]["hostvars"][instance_id] = {
+            instance_id = instance['PublicIpAddress']
+            
+            # Add instance to the "hosts" dictionary in the "all" group
+            inventory["all"]["hosts"][instance_id] = {
                 "ansible_user": "Administrator",  # Default user for Windows
                 "ansible_password": windows_secret,  # Windows admin password from Secrets Manager
                 "ansible_connection": "winrm",
                 "ansible_winrm_transport": "ntlm",
-                "ansible_winrm_server_cert_validation": "ignore"
+                "ansible_winrm_server_cert_validation": "ignore",
+                "ansible_host": instance['PublicIpAddress']
             }
 
     return json.dumps(inventory, indent=4)
 
 if __name__ == "__main__":
     print(create_inventory())
-

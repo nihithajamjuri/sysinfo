@@ -8,7 +8,7 @@ phases:
       python: 3.8
     commands:
       # Install necessary dependencies for Ansible and AWS CLI
-      - pip install ansible  boto3
+      - pip install ansible  boto3 pywinrm
 
   pre_build:
     commands:
@@ -34,7 +34,6 @@ phases:
           - python3 ansible/dynamic_inventory.py > dynamic_inventory.json
           - ls -al
           - cat dynamic_inventory.json
-#          - ansible all -m debug -a "var=group_names" -i dynamic_inventory.json
           - ansible all -m ping -i dynamic_inventory.json
 
 artifacts:
