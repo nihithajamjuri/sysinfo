@@ -1,0 +1,16 @@
+{% for host in groups['all'] %}
+[{{ host }}]
+{{ host }} ansible_user={{ 'ec2-user' if hostvars[host].ansible_facts['os_family'] == 'RedHat' else ('Administrator' if hostvars[host].ansible_facts['os_family'] == 'Windows' else 'otheruser') }} \
+ansible_connection={{ 'winrm' if hostvars[host].ansible_facts['os_family'] == 'Windows' else 'ssh' }} \
+{% if hostvars[host].ansible_facts['os_family'] == 'RedHat' %}
+ansible_ssh_private_key_file=/path/to/amazon/key.pem
+{% elif hostvars[host].ansible_facts['os_family'] == 'Windows' %}
+ansible_password=my_windows_password
+ansible_port=5986
+ansible_winrm_transport=ntlm
+ansible_winrm_server_cert_validation=ignore
+{% else %}
+ansible_ssh_pass=my_other_password
+{% endif %}
+{% endfor %}
+
