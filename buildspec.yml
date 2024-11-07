@@ -26,6 +26,7 @@ phases:
       - ansible-galaxy collection install amazon.aws
       - ansible-inventory -i ansible/inventory/demo.aws_ec2.yml --list
       - ls -al
+      - ansible all -m debug -a "var=group_names" -i ansible/inventory/demo.aws_ec2.yml
       - ansible all -m ping -i ansible/inventory/demo.aws_ec2.yml 
       #- ansible-playbook -i ansible/inventory/demo.aws_ec2.yml ansible/playbooks/deploy_code.yml
 
