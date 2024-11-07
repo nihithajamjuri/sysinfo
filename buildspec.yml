@@ -30,6 +30,7 @@ phases:
           - ansible-galaxy collection install amazon.aws
           - ansible-inventory -i ansible/inventory/demo.aws_ec2.yml --list
           - ls -al
+          - pwd
           - cat private_key.pem
           - python3 ansible/dynamic_inventory.py > dynamic_inventory.json
           - ls -al
