@@ -1,5 +1,0 @@
-version: 0.0
-os: windows
-files:
-  - source: /sys_info.py
-    destination: c:\temp

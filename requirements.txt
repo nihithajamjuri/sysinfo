@@ -1,1 +1,4 @@
-# No external libraries required for sys_info.py
+ansible
+boto3
+pywinrm
+

@@ -7,37 +7,22 @@ phases:
     runtime-versions:
       python: 3.8
     commands:
-      # Install necessary dependencies for Ansible and AWS CLI
-      - pip install ansible  boto3 pywinrm
+      # Install necessary dependencies
+      - pip install -r requirements.txt
 
-  pre_build:
-    commands:
-      # Retrieve Linux PEM key from Secrets Manager
-      - echo "Retrieving PEM key for Linux from Secrets Manager"
-      - aws secretsmanager get-secret-value --secret-id linux-ssh-key --query SecretString --output text > private_key.pem 
-      - chmod 600 private_key.pem  # Set appropriate permissions for the PEM file
-
-      # Retrieve Windows credentials from Secrets Manager
-   #   - echo "Retrieving Windows credentials from Secrets Manager"
-   #   - RAWOUTPUT=$(aws secretsmanager get-secret-value --secret-id windows-admin-password --query SecretString --output text)
-    #  - export WIN_USERNAME="Administrator"
-     # - export WIN_PASSWORD=$(echo $RAWOUTPUT | jq -r '.["windows-admin-password"]')
 
   build:
         commands:
-          # Set environment variables for Ansible to use
-          - echo "Running Ansible Playbook to deploy to Linux and Windows"
-          - ansible-galaxy collection install amazon.aws
-          - ansible-inventory -i ansible/inventory/demo.aws_ec2.yml --list
           - ls -al
           - pd=$(pwd)
-          - cp sys_info.py ansible/playbooks/files
-          - cat private_key.pem
+          - echo "Creating dyanmic inventory file"
           - python3 ansible/dynamic_inventory.py > dynamic_inventory.json
           - cat dynamic_inventory.json
+          - echo "Running Ansible Playbook to deploy to Linux and Windows"
           - ansible-playbook ansible/playbooks/deploy_code.yml -i dynamic_inventory.json -e "path=$pd"
 
 artifacts:
   files:
-    - '**/*'
-  base-directory: .
+    - ansible/playbooks/files/**
+  base-directory: ansible/playbooks  
+  discard-paths: no
