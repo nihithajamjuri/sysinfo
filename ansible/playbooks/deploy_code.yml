@@ -13,7 +13,8 @@
       ansible.builtin.copy:
         src: "{{ build_artifact_directory }}"
         dest: "{{ linux_deployment_directory }}/"
-        mode: '0644' 
+        mode: '0644'
+        owner: 'ec2-user' 
 
     - name: Deploy on Windows
       when: ansible_facts['os_family'] == 'Windows'  
