@@ -24,5 +24,4 @@ phases:
 artifacts:
   files:
     - ansible/playbooks/files/**
-  base-directory: ansible/playbooks  
   discard-paths: no
