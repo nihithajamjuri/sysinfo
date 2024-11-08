@@ -8,14 +8,14 @@
     windows_deployment_directory: "C:\\temp"  
   tasks:
     
-    - name: Ensure the system is up-to-date on Linux
+    - name: Deploy on Linux
       when: ansible_facts['os_family'] == 'RedHat'  
       ansible.builtin.copy:
         src: "{{ build_artifact_directory }}"
         dest: "{{ linux_deployment_directory }}/"
         mode: '0644' 
 
-    - name: Ensure the system is up-to-date on Windows
+    - name: Deploy on Windows
       when: ansible_facts['os_family'] == 'Windows'  
       ansible.windows.win_copy:
         src: "{{ build_artifact_directory }}"
